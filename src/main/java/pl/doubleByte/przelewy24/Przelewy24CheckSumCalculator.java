@@ -3,7 +3,7 @@ package pl.doubleByte.przelewy24;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import pl.doubleByte.przelewy24.models.MerchantId;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

@@ -47,7 +47,7 @@
         }
     }
 
-## 2. An example how to use:
+### 2. An example how to use:
     public PaymentToken prepareNewPayment(PurchaseOwnerId purchaseOwnerId, PurchaseId purchaseId, NewTransactionRequest createPurchaseRequest) {
 
         Purchase purchase = purchaseFinder.getPurchaseById(purchaseOwnerId, purchaseId);  <-- Your domain object
@@ -74,3 +74,39 @@
 
         return przelewy24Client.registryNewTransfer(registryNewTransfer);
     }
+### 3. An example of application.yml 
+    przelewy24:
+        crc: crcTest
+        reports-key: raportKeyTest
+        order-key: orderKey
+        account-id: 10000
+        api-url: /przelewy24
+        redirect-user-to-url-after-payment: "http://localhost:5173"
+        url-to-update-payment-status: "http://localhost:5173/public-api/purchase/update/status"
+        url-to-update-refund-status: "http://localhost:5173/public-api/purchase/update/refund/status"
+
+## How to run a fake implementation for local run:
+    @Profile(Profiles.FAKE_PRZELEWY_CLIENT)
+    @Bean
+    Przelewy24ApiClient getNotRealPrzelewy24Client() {
+        log.warn("Not real implementation of Przelewy24Client has been activated");
+        return new InMemoryPrzelewy24ApiClient();
+    }
+
+
+## How to test End to End with WireMock:
+
+    wireMockServer.stubFor(post(urlPathMatching("/przelewy24/api/v1/transaction/register"))
+        .withHeader("Content-Type", equalTo("application/json"))
+        .withHeader("Authorization", equalTo("Basic YourBasicAuth"))
+        .willReturn(aResponse()
+        .withStatus(201)
+        .withHeader("Content-Type", "application/json")
+        .withBody(objectMapper.writeValueAsString(new Przelewy24Response(new Przelewy24Token("UrlTokenPrzelewy"), 200))
+        )));
+    
+
+    String YourBasicAuth = przelewy24Properties.getMerchantDetails().getMerchantId().getValue() + ":" + przelewy24Properties.getReportsKey();
+        return Base64.getEncoder().encodeToString(auth.getBytes());
+
+

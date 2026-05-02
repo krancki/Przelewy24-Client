@@ -1,8 +1,9 @@
 package pl.doubleByte.przelewy24;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import pl.doubleByte.przelewy24.facade.*;
-import tools.jackson.databind.ObjectMapper;
+
 
 import java.io.IOException;
 import java.net.URI;
