@@ -4,5 +4,6 @@ import lombok.Value;
 
 @Value
 public class PaymentToken {
-    String value;
+    String token;
+    String redirectUrl;
 }

@@ -8,14 +8,10 @@ import java.util.UUID;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Value
-public class PurchaseId {
-    UUID value;
+public class PrzelewyPurchaseId {
+    String value;
 
-    public static PurchaseId ofNew() {
-        return new PurchaseId(UUID.randomUUID());
-    }
-
-    public static PurchaseId of(UUID value) {
-        return new PurchaseId(value);
+    public static PrzelewyPurchaseId of(String value) {
+        return new PrzelewyPurchaseId(value);
     }
 }

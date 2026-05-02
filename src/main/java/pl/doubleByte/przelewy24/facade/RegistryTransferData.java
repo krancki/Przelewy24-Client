@@ -37,12 +37,12 @@ public class RegistryTransferData {
         return Optional.ofNullable(additionalDetails);
     }
 
-    public static SessionStep builder() {
+    public static PaymentStepId builder() {
         return new Builder();
     }
 
-    public interface SessionStep {
-        CustomerDetailsStep withSessionId(PaymentPurchaseId paymentPurchaseId);
+    public interface PaymentStepId {
+        CustomerDetailsStep withPurchaseId(PaymentPurchaseId paymentPurchaseId);
     }
 
     public interface CustomerDetailsStep {
@@ -61,7 +61,7 @@ public class RegistryTransferData {
         RegistryTransferData build();
     }
 
-    private static class Builder implements SessionStep, CustomerDetailsStep, PaymentDetailsStep, OptionalStep {
+    private static class Builder implements PaymentStepId, CustomerDetailsStep, PaymentDetailsStep, OptionalStep {
         private PaymentPurchaseId purchaseId;
         private CustomerDetails customerDetails;
         private PaymentDetails paymentDetails;
@@ -69,7 +69,7 @@ public class RegistryTransferData {
         private AdditionalDetails additionalDetails;
 
         @Override
-        public CustomerDetailsStep withSessionId(PaymentPurchaseId paymentPurchaseId) {
+        public CustomerDetailsStep withPurchaseId(PaymentPurchaseId paymentPurchaseId) {
             this.purchaseId = paymentPurchaseId;
             return this;
         }

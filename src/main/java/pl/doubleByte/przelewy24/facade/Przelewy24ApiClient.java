@@ -1,7 +1,7 @@
 package pl.doubleByte.przelewy24.facade;
 
 
-public interface Przelewy24Client {
+public interface Przelewy24ApiClient {
     PaymentToken registryNewTransfer(RegistryTransferData registryTransferData);
 
     PaymentVerificationStatus verifyPayment(VerificationData verificationData);

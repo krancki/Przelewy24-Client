@@ -7,7 +7,7 @@ public class PaymentPurchaseId {
     String value;
 
 
-    public static PaymentPurchaseId of(PurchaseId purchaseId) {
-        return new PaymentPurchaseId(purchaseId.getValue().toString());
+    public static PaymentPurchaseId of(String value) {
+        return new PaymentPurchaseId(value);
     }
 }

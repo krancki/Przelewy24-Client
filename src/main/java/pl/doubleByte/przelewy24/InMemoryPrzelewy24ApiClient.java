@@ -6,12 +6,12 @@ import pl.doubleByte.przelewy24.facade.*;
 import java.util.UUID;
 
 @Slf4j
-public class InMemoryPrzelewy24Client implements Przelewy24Client {
+public class InMemoryPrzelewy24ApiClient implements Przelewy24ApiClient {
 
     @Override
     public PaymentToken registryNewTransfer(RegistryTransferData registryTransferData) {
         log.info("New transfer registered {} in stubbed repository.(Not real service)", registryTransferData);
-        return new PaymentToken(UUID.randomUUID().toString());
+        return new PaymentToken(UUID.randomUUID().toString(), "https://przelewy24.pl/token");
     }
 
     @Override

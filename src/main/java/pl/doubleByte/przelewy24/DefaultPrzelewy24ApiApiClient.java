@@ -9,12 +9,11 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.Duration;
 import java.util.Base64;
 import java.util.stream.Collectors;
 
 @Slf4j
-class Przelewy24ApiClient implements Przelewy24Client {
+public class DefaultPrzelewy24ApiApiClient implements Przelewy24ApiClient {
 
     private static final String API_REGISTRY_ENDPOINT = "/api/v1/transaction/register";
     private static final String API_VERIFY_ENDPOINT = "/api/v1/transaction/verify";
@@ -24,11 +23,12 @@ class Przelewy24ApiClient implements Przelewy24Client {
     private final ObjectMapper objectMapper;
     private final Przelewy24Properties przelewy24Properties;
     private final Przelewy24RequestBodyMapper przelewy24RequestBodyMapper;
+    private final PaymentUrlCreator paymentUrlCreator;
 
-    public Przelewy24ApiClient(
+    public DefaultPrzelewy24ApiApiClient(
             HttpClient httpClient,
             Przelewy24Properties przelewy24Properties,
-                               ObjectMapper objectMapper
+            ObjectMapper objectMapper
     ) {
         this.httpClient = httpClient;
         this.objectMapper = objectMapper;
@@ -38,6 +38,7 @@ class Przelewy24ApiClient implements Przelewy24Client {
                 przelewy24Properties.getMerchantDetails().getMerchantId(),
                 przelewy24Properties.getCrc()
         ));
+        this.paymentUrlCreator = new Przelewy24PaymentUrlCreator(przelewy24Properties);
     }
 
     @Override
@@ -61,7 +62,7 @@ class Przelewy24ApiClient implements Przelewy24Client {
 
             Przelewy24RegistryTransactionResponse paymentToken = objectMapper.readValue(response.body(), Przelewy24RegistryTransactionResponse.class);
 
-            return new PaymentToken(paymentToken.getTokenValue());
+            return new PaymentToken(paymentToken.getTokenValue(), paymentUrlCreator.createPaymentUrl(paymentToken.getTokenValue()));
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Error while communicating with Przelewy24 API", e);
         }
